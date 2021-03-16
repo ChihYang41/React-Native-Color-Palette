@@ -2,18 +2,26 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 type TProps = {
+  style?: object;
   colorName: string;
   hexColor: string;
 };
 
 const ColorBox = ({ colorName, hexColor }: TProps) => {
-  const colorStyle = {
+  const boxColor = {
     backgroundColor: hexColor,
   };
 
+  const textColor = {
+    color:
+      parseInt(hexColor.replace('#', ''), 16) > 0xffffff / 1.1
+        ? 'black'
+        : 'white',
+  };
+
   return (
-    <View style={[styles.box, colorStyle]}>
-      <Text style={styles.text}>
+    <View style={[styles.box, boxColor]}>
+      <Text style={[styles.text, textColor]}>
         {colorName}: {hexColor}
       </Text>
     </View>
