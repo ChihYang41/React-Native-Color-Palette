@@ -13,13 +13,17 @@ import ColorPalette from './screens/ColorPalette';
 import ColorPaletteModal from './screens/ColorPaletteModal';
 import { TPalette } from './utils/colors';
 
+type HomeParams = {
+  newPalette: TPalette;
+};
+
 export type RootStackParamList = {
   Main: undefined;
   ColorPaletteModal: undefined;
 };
 
 export type MainStackParamList = {
-  Home: undefined;
+  Home: HomeParams;
   ColorPalette: TPalette;
 };
 

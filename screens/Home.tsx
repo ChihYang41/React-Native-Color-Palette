@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FlatList, StyleSheet, Button } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 
 import { MainStackParamList, MainNavigationProp } from '../App';
 import PalettePreview from '../components/PalettePreview';
@@ -12,13 +12,19 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
   MainNavigationProp
 >;
 
+type HomeScreenRouteProps = RouteProp<MainStackParamList, 'Home'>;
+
 type TProps = {
+  route: HomeScreenRouteProps;
   navigation: HomeScreenNavigationProp;
 };
 
-export default function Home({ navigation }: TProps) {
-  const [colorPalettes, setColorPalettes] = useState([]);
+export default function Home({ navigation, route }: TProps) {
+  const [colorPalettes, setColorPalettes] = useState<TPalette[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const newPalette: TPalette | undefined = route.params
+    ? route.params.newPalette
+    : undefined;
 
   const fetchColorPalettes = useCallback(async () => {
     const result = await fetch(
@@ -51,9 +57,19 @@ export default function Home({ navigation }: TProps) {
     }, 1000);
   };
 
+  const handleOpenModal = () => {
+    navigation.navigate('ColorPaletteModal');
+  };
+
   useEffect(() => {
     fetchColorPalettes();
   }, [fetchColorPalettes]);
+
+  useEffect(() => {
+    if (newPalette) {
+      setColorPalettes((current) => [newPalette, ...current]);
+    }
+  }, [newPalette]);
 
   return (
     <FlatList
@@ -62,11 +78,9 @@ export default function Home({ navigation }: TProps) {
       renderItem={renderPalettePreview}
       keyExtractor={(item) => item.paletteName}
       ListHeaderComponent={() => (
-        <Button
-          title="Press me"
-          color="#f194ff"
-          onPress={() => navigation.navigate('ColorPaletteModal')}
-        />
+        <TouchableOpacity onPress={handleOpenModal}>
+          <Text style={styles.buttonText}>Add a color scheme</Text>
+        </TouchableOpacity>
       )}
       refreshing={isRefreshing}
       onRefresh={handleRefresh}
@@ -84,5 +98,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#00A0B0',
+    marginVertical: 15,
   },
 });
