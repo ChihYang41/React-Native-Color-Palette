@@ -22,9 +22,7 @@ type TProps = {
 export default function Home({ navigation, route }: TProps) {
   const [colorPalettes, setColorPalettes] = useState<TPalette[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const newPalette: TPalette | undefined = route.params
-    ? route.params.newPalette
-    : undefined;
+  const newPalette: TPalette | undefined = route?.params?.newPalette;
 
   const fetchColorPalettes = useCallback(async () => {
     const result = await fetch(
