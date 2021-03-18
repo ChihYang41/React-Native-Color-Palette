@@ -2,12 +2,12 @@ import React from 'react';
 import { Text, StyleSheet, FlatList } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
-import { RootStackParamList } from '../App';
+import { MainStackParamList } from '../App';
 
 import ColorBox from '../components/ColorBox';
 import { TColor } from '../utils/colors';
 
-type ColorScreenRouteProp = RouteProp<RootStackParamList, 'ColorPalette'>;
+type ColorScreenRouteProp = RouteProp<MainStackParamList, 'ColorPalette'>;
 
 type Props = {
   route: ColorScreenRouteProp;
