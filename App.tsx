@@ -1,29 +1,63 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  NavigationContainer,
+  CompositeNavigationProp,
+} from '@react-navigation/native';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
 
 import Home from './screens/Home';
 import ColorPalette from './screens/ColorPalette';
+import ColorPaletteModal from './screens/ColorPaletteModal';
 import { TPalette } from './utils/colors';
 
 export type RootStackParamList = {
+  Main: undefined;
+  ColorPaletteModal: undefined;
+};
+
+export type MainStackParamList = {
   Home: undefined;
   ColorPalette: TPalette;
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+export type MainNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<MainStackParamList, 'Home'>,
+  StackNavigationProp<RootStackParamList>
+>;
+
+const RootStack = createStackNavigator<RootStackParamList>();
+const MainStack = createStackNavigator<MainStackParamList>();
+
+const MainStackScreen = () => {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen name="Home" component={Home} />
+      <MainStack.Screen
+        name="ColorPalette"
+        component={ColorPalette}
+        options={({ route }) => ({ title: route.params.paletteName })}
+      />
+    </MainStack.Navigator>
+  );
+};
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen
-          name="ColorPalette"
-          component={ColorPalette}
-          options={({ route }) => ({ title: route.params.paletteName })}
+      <RootStack.Navigator mode="modal">
+        <RootStack.Screen
+          name="Main"
+          component={MainStackScreen}
+          options={{ headerShown: false }}
         />
-      </Stack.Navigator>
+        <RootStack.Screen
+          name="ColorPaletteModal"
+          component={ColorPaletteModal}
+        />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };
