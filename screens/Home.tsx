@@ -90,13 +90,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
-  input: {
-    height: 40,
-    marginVertical: 12,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
