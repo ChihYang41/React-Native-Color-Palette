@@ -60,7 +60,10 @@ export default function ColorPaletteModal({ navigation }: TProps) {
     );
     return (
       <View style={styles.toggleContainer}>
-        <Text>{item.colorName}</Text>
+        <View style={styles.color}>
+          <Text>{item.colorName}</Text>
+          <View style={[styles.colorBox, { backgroundColor: item.hexCode }]} />
+        </View>
         <Switch
           trackColor={{ false: '#767577', true: '#81b0ff' }}
           thumbColor={isActive ? '#f5dd4b' : '#f4f3f4'}
@@ -126,5 +129,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
+  },
+  color: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  colorBox: {
+    width: 20,
+    height: 20,
+    borderRadius: 5,
+    marginLeft: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
   },
 });
