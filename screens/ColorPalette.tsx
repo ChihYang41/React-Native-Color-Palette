@@ -1,6 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, FlatList } from 'react-native';
+import { Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import Clipboard from 'expo-clipboard';
+import { useToast } from 'react-native-fast-toast';
 
 import { MainStackParamList } from '../App';
 
@@ -15,9 +17,28 @@ type Props = {
 
 export default function ColorPalette({ route }: Props) {
   const { colors, paletteName } = route.params;
+  const toast = useToast();
+
+  const handleCopyHexCode = (hexCode: string) => {
+    return async function () {
+      Clipboard.setString(hexCode);
+
+      const hasString = await Clipboard.getStringAsync();
+
+      if (hasString) {
+        toast?.show('Copied text successfully', {
+          duration: 1000,
+        });
+      }
+    };
+  };
 
   const renderColorBox = ({ item }: { item: TColor }) => {
-    return <ColorBox colorName={item.colorName} hexColor={item.hexCode} />;
+    return (
+      <TouchableOpacity onPress={handleCopyHexCode(item.hexCode)}>
+        <ColorBox colorName={item.colorName} hexColor={item.hexCode} />
+      </TouchableOpacity>
+    );
   };
 
   return (
@@ -25,7 +46,7 @@ export default function ColorPalette({ route }: Props) {
       style={styles.container}
       data={colors}
       renderItem={renderColorBox}
-      keyExtractor={(item) => item.hexCode}
+      keyExtractor={(item) => item.colorName}
       ListHeaderComponent={<Text style={styles.title}>{paletteName}</Text>}
     />
   );

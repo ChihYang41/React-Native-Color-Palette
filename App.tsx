@@ -7,6 +7,7 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
+import { ToastProvider } from 'react-native-fast-toast';
 
 import Home from './screens/Home';
 import ColorPalette from './screens/ColorPalette';
@@ -51,17 +52,19 @@ const MainStackScreen = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <RootStack.Navigator mode="modal">
-        <RootStack.Screen
-          name="Main"
-          component={MainStackScreen}
-          options={{ headerShown: false }}
-        />
-        <RootStack.Screen
-          name="ColorPaletteModal"
-          component={ColorPaletteModal}
-        />
-      </RootStack.Navigator>
+      <ToastProvider>
+        <RootStack.Navigator mode="modal">
+          <RootStack.Screen
+            name="Main"
+            component={MainStackScreen}
+            options={{ headerShown: false }}
+          />
+          <RootStack.Screen
+            name="ColorPaletteModal"
+            component={ColorPaletteModal}
+          />
+        </RootStack.Navigator>
+      </ToastProvider>
     </NavigationContainer>
   );
 };
