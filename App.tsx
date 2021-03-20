@@ -52,7 +52,7 @@ const MainStackScreen = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <ToastProvider>
+      <ToastProvider placement="bottom">
         <RootStack.Navigator mode="modal">
           <RootStack.Screen
             name="Main"
